@@ -411,9 +411,9 @@ function Support() {
                   </div>
                 </div>
                 <div className="text-sm text-gray-600 mt-4">
-                  By clicking "send" you consent to allow Simple to store and
-                  process the personal information submitted above and agree to
-                  our{" "}
+                  By clicking {'"send"'} you consent to allow Simple to store
+                  and process the personal information submitted above and agree
+                  to our{" "}
                   <a className="underline" href="#0">
                     terms and conditions
                   </a>{" "}
