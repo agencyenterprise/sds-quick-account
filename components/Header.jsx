@@ -1,14 +1,23 @@
+import cookieCutter from "cookie-cutter";
 import Link from "next/link";
+import Router from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Dropdown from "../utils/Dropdown";
 import Transition from "../utils/Transition";
 
-function Header() {
+function Header({ user }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [top, setTop] = useState(true);
 
   const trigger = useRef(null);
   const mobileNav = useRef(null);
+
+  const handleLogout = () => {
+    cookieCutter.set("token", "");
+    Router.push("/signin");
+  };
 
   // close the mobile menu on click outside
   useEffect(() => {
@@ -51,6 +60,7 @@ function Header() {
         !top && "bg-white backdrop-blur-sm shadow-lg"
       }`}
     >
+      <ToastContainer />
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Site branding */}
@@ -119,16 +129,41 @@ function Header() {
             </ul>
 
             {/* Desktop sign in links */}
-            <ul className="flex grow justify-end flex-wrap items-center">
-              <li className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">
-                <Link href="/signin">Sign in</Link>
-              </li>
-              <li className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
-                <Link href="/signup">
-                  <div className="flex items-center cursor-pointer">
-                    <span>Sign up</span>
+            {!user?.email ? (
+              <ul className="flex grow justify-end flex-wrap items-center">
+                <li className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">
+                  <Link href="/signin">Sign in</Link>
+                </li>
+                <li className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
+                  <Link href="/signup">
+                    <div className="flex items-center cursor-pointer">
+                      <span>Sign up</span>
+                      <svg
+                        className="w-3 h-3 fill-current text-gray-400 shrink-0 ml-2 -mr-1"
+                        viewBox="0 0 12 12"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z"
+                          fillRule="nonzero"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
+                </li>
+              </ul>
+            ) : (
+              <ul className="flex grow justify-end flex-wrap items-center">
+                <li className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">
+                  <Link href="/account">{user.name}</Link>
+                </li>
+                <li className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
+                  <div
+                    className="flex items-center cursor-pointer"
+                    onClick={handleLogout}
+                  >
                     <svg
-                      className="w-3 h-3 fill-current text-gray-400 shrink-0 ml-2 -mr-1"
+                      className="w-3 h-3 fill-current text-gray-400 shrink-0 "
                       viewBox="0 0 12 12"
                       xmlns="http://www.w3.org/2000/svg"
                     >
@@ -138,9 +173,9 @@ function Header() {
                       />
                     </svg>
                   </div>
-                </Link>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            )}
           </nav>
 
           {/* Mobile menu */}
@@ -180,83 +215,40 @@ function Header() {
                 leaveEnd="opacity-0"
               >
                 <ul className="px-5 py-2">
-                  <li>
-                    <Link
-                      href="/pricing"
-                      className="flex text-gray-600 hover:text-gray-900 py-2"
-                    >
-                      Pricing
-                    </Link>
+                  <li className="flex text-gray-600 hover:text-gray-900 py-2">
+                    <Link href="/pricing">Pricing</Link>
                   </li>
-                  <li>
-                    <Link
-                      href="/about"
-                      className="flex text-gray-600 hover:text-gray-900 py-2"
-                    >
-                      About us
-                    </Link>
+                  <li className="flex text-gray-600 hover:text-gray-900 py-2">
+                    <Link href="/about">About us</Link>
                   </li>
-                  <li>
-                    <Link
-                      href="/tutorials"
-                      className="flex text-gray-600 hover:text-gray-900 py-2"
-                    >
-                      Tutorials
-                    </Link>
+                  <li className="flex text-gray-600 hover:text-gray-900 py-2">
+                    <Link href="/tutorials">Tutorials</Link>
                   </li>
-                  <li>
-                    <Link
-                      href="/blog"
-                      className="flex text-gray-600 hover:text-gray-900 py-2"
-                    >
-                      Blog
-                    </Link>
+                  <li className="flex text-gray-600 hover:text-gray-900 py-2">
+                    <Link href="/blog">Blog</Link>
                   </li>
                   <li className="py-2 my-2 border-t border-b border-gray-200">
                     <span className="flex text-gray-600 hover:text-gray-900 py-2">
                       Resources
                     </span>
                     <ul className="pl-4">
-                      <li>
-                        <Link
-                          href="/documentation"
-                          className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2"
-                        >
-                          Documentation
-                        </Link>
+                      <li className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2">
+                        <Link href="/documentation">Documentation</Link>
                       </li>
-                      <li>
-                        <Link
-                          href="/support"
-                          className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2"
-                        >
-                          Support center
-                        </Link>
+                      <li className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2">
+                        <Link href="/support">Support center</Link>
                       </li>
-                      <li>
-                        <Link
-                          href="/404"
-                          className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2"
-                        >
-                          404
-                        </Link>
+                      <li className="text-sm flex font-medium text-gray-600 hover:text-gray-900 py-2">
+                        <Link href="/404">404</Link>
                       </li>
                     </ul>
                   </li>
-                  <li>
-                    <Link
-                      href="/signin"
-                      className="flex font-medium w-full text-gray-600 hover:text-gray-900 py-2 justify-center"
-                    >
-                      Sign in
-                    </Link>
+                  <li className="flex font-medium w-full text-gray-600 hover:text-gray-900 py-2 justify-center">
+                    <Link href="/signin">Sign in</Link>
                   </li>
                   <li>
-                    <Link
-                      href="/signup"
-                      className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 w-full my-2"
-                    >
-                      <>
+                    <Link href="/signup">
+                      <div className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 w-full my-2 cursor-pointer">
                         <span>Sign up</span>
                         <svg
                           className="w-3 h-3 fill-current text-gray-400 shrink-0 ml-2 -mr-1"
@@ -269,7 +261,7 @@ function Header() {
                             fillRule="nonzero"
                           />
                         </svg>
-                      </>
+                      </div>
                     </Link>
                   </li>
                 </ul>

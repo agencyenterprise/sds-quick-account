@@ -1,8 +1,64 @@
 import Link from "next/link";
-
+import Router from "next/router";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import Header from "../components/Header";
 
+const initialFormState = {
+  name: "",
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+};
+
 function SignUp() {
+  const [loading, setLoading] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [form, setForm] = useState(initialFormState);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    if (form.password !== form.passwordConfirmation) {
+      toast("Password and Password Confirmation must match.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setLoading(false);
+      return false;
+    }
+
+    await fetch("/api/auth/signup", {
+      body: JSON.stringify(form),
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status !== 200) {
+          toast(data.message);
+          setLoading(false);
+          setCreated(false);
+        } else {
+          toast(data.message);
+          setLoading(false);
+          setCreated(true);
+          setForm(initialFormState);
+          setTimeout(() => {
+            Router.push("/signin");
+          }, 3000);
+        }
+      });
+    setLoading(false);
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
@@ -22,7 +78,7 @@ function SignUp() {
 
               {/* Form */}
               <div className="max-w-sm mx-auto">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label
@@ -36,6 +92,8 @@ function SignUp() {
                         type="text"
                         className="form-input w-full text-gray-800"
                         placeholder="Enter your name"
+                        value={form.name}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -53,6 +111,8 @@ function SignUp() {
                         type="email"
                         className="form-input w-full text-gray-800"
                         placeholder="Enter your email address"
+                        value={form.email}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -70,21 +130,50 @@ function SignUp() {
                         type="password"
                         className="form-input w-full text-gray-800"
                         placeholder="Enter your password"
+                        value={form.password}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap -mx-3 mb-4">
+                    <div className="w-full px-3">
+                      <label
+                        className="block text-gray-800 text-sm font-medium mb-1"
+                        htmlFor="password"
+                      >
+                        Confirm Password <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        id="passwordConfirmation"
+                        type="password"
+                        className="form-input w-full text-gray-800"
+                        placeholder="Enter your password"
+                        value={form.passwordConfirmation}
+                        onChange={handleChange}
                         required
                       />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">
-                        Sign up
+                      <button
+                        type="submit"
+                        className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                        disabled={loading}
+                      >
+                        {created
+                          ? "Redirecting..."
+                          : loading
+                          ? "Loading..."
+                          : "Sign up"}
                       </button>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 text-center mt-3">
                     By creating an account, you agree to the{" "}
                     <a className="underline" href="#0">
-                      terms & conditions
+                      {"terms & conditions"}
                     </a>
                     , and our{" "}
                     <a className="underline" href="#0">
