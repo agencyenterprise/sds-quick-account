@@ -8,6 +8,7 @@ import Dropdown from "../utils/Dropdown";
 import Transition from "../utils/Transition";
 
 function Header({ user }) {
+  console.log(user);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [top, setTop] = useState(true);
 
@@ -155,7 +156,11 @@ function Header({ user }) {
             ) : (
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">
-                  <Link href="/account">{user.name}</Link>
+                  <Link href="/account">
+                    <span className="cursor-pointer">
+                      {user.name} ({user.plan})
+                    </span>
+                  </Link>
                 </li>
                 <li className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
                   <div

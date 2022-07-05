@@ -44,6 +44,7 @@ export default async function handler(req, res) {
         name,
         email,
         password: hash,
+        plan: "free",
       };
 
       await client.db(process.env.DB_NAME).collection("users").insertOne(doc);

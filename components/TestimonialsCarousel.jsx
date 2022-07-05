@@ -7,7 +7,7 @@ function TestimonialsCarousel() {
   const [autorotateTiming] = useState(7000);
   const [items] = useState([
     {
-      img: "/testimonial-01.jpg",
+      img: "/images/testimonial-01.jpg",
       alt: "Testimonial 01",
       quote:
         "“ I love this product and would recommend it to anyone. Could be not easier to use, and our multiple websites are wonderful. We get nice comments all the time. “",
@@ -17,7 +17,7 @@ function TestimonialsCarousel() {
       link: "#0",
     },
     {
-      img: "/testimonial-02.jpg",
+      img: "/images/testimonial-02.jpg",
       alt: "Testimonial 02",
       quote:
         "“ Not only in my career but in education as well, I feel grateful that Simple pushed me to expand my horizons and strive to accomplish more.“",
@@ -27,7 +27,7 @@ function TestimonialsCarousel() {
       link: "#0",
     },
     {
-      img: "/testimonial-03.jpg",
+      img: "/images/testimonial-03.jpg",
       alt: "Testimonial 03",
       quote:
         "“ I feel grateful that Simple pushed me to expand my horizons and strive to accomplish more, not only in my career but in education as well.“",
