@@ -1,7 +1,7 @@
 import Cookies from "cookies";
-import Header from "../compimport Cookies from ";
 import BlogList from "../components/BlogList";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
