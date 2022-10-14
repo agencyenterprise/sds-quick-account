@@ -1,7 +1,7 @@
+import Cookies from "cookies";
 import Header from "../compimport Cookies from ";
 import BlogList from "../components/BlogList";
 import Footer from "../components/Footer";
-cookies";
 
 export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
@@ -19,7 +19,7 @@ export async function getServerSideProps({ req, res }) {
 
   const response = await userRes.json();
 
-  // // does not allow access to page if not logged in
+  // does not allow access to page if not logged in
   if (!response.user?.email) {
     return {
       redirect: {
@@ -34,11 +34,11 @@ export async function getServerSideProps({ req, res }) {
   };
 }
 
-function Blog({user}) {
+function Blog({ user }) {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
-      <Header user={user}/>
+      <Header user={user} />
 
       {/*  Page content */}
       <main className="grow">
